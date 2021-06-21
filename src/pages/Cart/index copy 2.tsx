@@ -19,17 +19,14 @@ interface Product {
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
 
-  const cartFormatted = cart.map((product) => ({
-    // TODO
-    ...product,
-    priceFormatted: formatPrice(product.price),
-    subTotal: formatPrice(product.price * product.amount),
-  }));
-
+  // const cartFormatted = cart.map(product => ({
+  //   // TODO
+  // }))
   const total = formatPrice(
     cart.reduce((sumTotal, product) => {
       // TODO
-      return sumTotal + product.amount * product.price;
+      sumTotal += product.amount * product.price;
+      return sumTotal;
     }, 0)
   );
 
@@ -37,7 +34,7 @@ const Cart = (): JSX.Element => {
     // TODO
     updateProductAmount({
       productId: product.id,
-      amount: product.amount + 1,
+      amount: 1,
     });
   }
 
@@ -45,7 +42,7 @@ const Cart = (): JSX.Element => {
     // TODO
     updateProductAmount({
       productId: product.id,
-      amount: product.amount - 1,
+      amount: -1,
     });
   }
 
@@ -55,8 +52,8 @@ const Cart = (): JSX.Element => {
   }
 
   useEffect(() => {
-    console.log(`cart updated ${JSON.stringify(cart)}`);
-  }, [cart]);
+    console.log(`cart updated ${JSON.stringify(cart)}`)
+  }, [cart])
 
   return (
     <Container>
@@ -71,14 +68,14 @@ const Cart = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {cartFormatted.map((product) => (
+          {cart.map((product) => (
             <tr data-testid="product" key={product.id}>
               <td>
                 <img src={product.image} alt={product.title} />
               </td>
               <td>
                 <strong>{product.title}</strong>
-                <span>{product.priceFormatted}</span>
+                <span>{product.price}</span>
               </td>
               <td>
                 <div>
@@ -106,7 +103,7 @@ const Cart = (): JSX.Element => {
                 </div>
               </td>
               <td>
-                <strong>{product.subTotal}</strong>
+                <strong>{formatPrice(product.price * product.amount)}</strong>
               </td>
               <td>
                 <button

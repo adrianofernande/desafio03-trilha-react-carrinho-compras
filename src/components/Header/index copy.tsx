@@ -8,7 +8,10 @@ import { Cart, Container } from './styles';
 
 const Header = (): JSX.Element => {
   const { cart } = useCart();
-  const cartSize = cart.length
+  const cartSize = cart.reduce((sumTotal, product) => {
+    sumTotal += 1
+    return sumTotal
+  }, 0)
 
   return (
     <Container>
